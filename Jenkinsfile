@@ -19,7 +19,7 @@ pipeline {
 
             steps { 
 
-                git ['https://github.com/lijishapv27/java-docker-project.git', branch: 'master']
+                git 'https://github.com/lijishapv27/java-docker-project.git', 'main'
 
             }
 
