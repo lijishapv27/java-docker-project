@@ -12,12 +12,8 @@ pipeline {
     }
 
     agent any 
-
-    agent {
-    label 'docker' 
-  }
-
-    stages { 
+        
+        stages { 
 
         stage('Docker node test') {
                 agent {
