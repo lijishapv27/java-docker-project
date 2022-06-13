@@ -10,7 +10,7 @@ pipeline{
   stage('build image')
    {
     when{
-      branch "prod"
+      branch "main"
     }
     steps{
       sh 'docker build -t maven-java-dockerfile .'
@@ -19,7 +19,7 @@ pipeline{
    stage('pushing to dockerhub')
    {
     when{
-      branch "prod"
+      branch "main"
     }
     steps{
       sh 'docker tag java-docker-project lijisha27/java-maven-jenkins:latest '
