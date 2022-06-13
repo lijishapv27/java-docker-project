@@ -18,8 +18,8 @@ pipeline {
         stage('Cloning our Git') { 
 
             steps { 
+                git branch: 'main', url: 'https://github.com/lijishapv27/java-docker-project.git'
 
-                git 'https://github.com/lijishapv27/java-docker-project.git', 'main'
 
             }
 
