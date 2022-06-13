@@ -1,32 +1,32 @@
-pipeline{
-  agent any
-  tools {
-    maven 'maven'
-    jdk 'Java'
-  }
-  environment {
-    dockerhub=credentials('docker-credential')
-  }
-  stage('build image')
-   {
-    when{
-      branch "main"
-    }
-    steps{
-      sh 'docker build -t maven-java-dockerfile .'
-    }
-   }
-   stage('pushing to dockerhub')
-   {
-    when{
-      branch "main"
-    }
-    steps{
-      sh 'docker tag java-docker-project lijisha27/java-maven-jenkins:latest '
-      sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
-      sh 'docker push lijisha27/java-maven-jenkins:latest '
-    }
-   }
+pipeline {
+environment {
+imagename = "java-dockder-project"
+registryCredential = 'lijisha27/java-maven-jenkins'
+dockerImage = ''
 }
-
-
+agent any
+stages {
+stage('Cloning Git') {
+steps {
+git([url: 'https://github.com/lijishapv27/java-docker-project.git', branch: 'main'])
+}
+}
+stage('Building image') {
+steps{
+script {
+dockerImage = docker.build imagename
+}
+}
+}
+stage('Deploy Image') {
+steps{
+script {
+docker.withRegistry( '', registryCredential ) {
+dockerImage.push("$BUILD_NUMBER")
+dockerImage.push('latest')
+}
+}
+}
+}
+}
+}
