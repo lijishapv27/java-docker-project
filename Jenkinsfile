@@ -1,13 +1,13 @@
 pipeline { 
 
     environment { 
-        imagename = "java-dockder-project"
+        
 
         registry = "lijisha27/java-maven-jenkins" 
 
-        registryCredential = 'docker-credential' 
+        registryCredential = 'lijisha-dockerhub' 
 
-        dockerImage = 'java-dockder-project ' 
+        dockerImage = ' ' 
 
     }
 
