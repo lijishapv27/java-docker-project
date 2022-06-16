@@ -5,7 +5,7 @@ pipeline {
 
         registry = "lijisha27/java-maven-jenkins" 
 
-        registryCredential = 'docker-credential' 
+        registryCredential = 'Mydockerhub-credential' 
 
         dockerImage = ' ' 
 
