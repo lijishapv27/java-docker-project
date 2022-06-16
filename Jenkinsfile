@@ -1,74 +1,34 @@
-pipeline { 
-
-    environment { 
-        
-
-        registry = "lijisha27/java-maven-jenkins" 
-
-        registryCredential = 'Mydockerhub-credential' 
-
-        dockerImage = ' ' 
-
-    }
-
-    agent {
-        dockerfile true
-    } 
-
-    stages { 
-
-        stage('Cloning our Git') { 
-
-            steps { 
-                git branch: 'main', url: 'https://github.com/lijishapv27/java-docker-project.git'
-
-
+pipeline {
+    agent any
+ stages {
+  stage('Docker Build and Tag') {
+           steps {
+              
+                sh 'docker build -t java-docker-img:latest .' 
+                sh 'docker tag java-docker-img lijisha27/java-maven-jenkins:latest'
+                sh 'docker tag java-docker-img lijisha27/java-maven-jenkins:$BUILD_NUMBER'
+               
+          }
+        }
+     
+  stage('Publish image to Docker Hub') {
+          
+            steps {
+        withDockerRegistry([ credentialsId: "Mydockerhub-credential", url: "" ]) {
+          sh  'docker push lijisha27/java-maven-jenkins:latest'
+          sh  'docker push lijisha27/java-maven-jenkins:$BUILD_NUMBER' 
+        }
+                  
+          }
+        }
+     
+      stage('Run Docker container on Jenkins Agent') {
+             
+            steps {
+                sh "docker run -d -p 4030:80 lijisha27/java-maven-jenkins"
+ 
             }
-
-        } 
-
-        stage('Building our image') { 
-
-            steps { 
-
-                script { 
-
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-
-                }
-
-            } 
-
         }
 
-        stage('Deploy our image') { 
-
-            steps { 
-
-                script { 
-
-                    docker.withRegistry( '', registryCredential ) { 
-
-                        dockerImage.push() 
-
-                    }
-
-                } 
-
-            }
-
-        } 
-
-        stage('Cleaning up') { 
-
-            steps { 
-
-                sh "docker rmi $registry:$BUILD_NUMBER" 
-
-            }
-
-        } 
-
     }
-
 }
