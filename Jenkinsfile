@@ -22,13 +22,7 @@ pipeline {
           }
         }
      
-      stage('Run Docker container on Jenkins Agent') {
-             
-            steps {
-                sh "docker run -d -p 4030:80 lijisha27/java-maven-jenkins"
- 
-            }
-        }
+      
 
     }
 }
